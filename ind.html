@@ -91,6 +91,8 @@
     <input type="text" id="name-input" placeholder="Enter your name" class="hidden"/>
     <input type="file" id="photo-input" accept="image/*" class="hidden"/>
     <img id="photo-preview" alt="Photo Preview" />
+    <button class="edit-btn" onclick="editInfo()">Edit</button>
+    <button class="save-btn hidden" onclick="saveInfo()">Save</button>
 </div>
 
 <h1 id="greeting">HEY!!! </h1>
@@ -157,6 +159,38 @@
             photoPreview.src = savedPhoto;
             photoPreview.style.display = "block";
         }
+    }
+
+    function editInfo() {
+        document.getElementById("name-input").classList.remove('hidden');
+        document.getElementById("photo-input").classList.remove('hidden');
+        document.querySelector('.save-btn').classList.remove('hidden');
+    }
+
+    function saveInfo() {
+        const name = document.getElementById("name-input").value;
+        const photoInput = document.getElementById("photo-input");
+        const photoPreview = document.getElementById("photo-preview");
+
+        if (name) {
+            localStorage.setItem("name", name);
+            document.getElementById("greeting").innerText = "HEY!!! " + name; // Update greeting
+        }
+
+        if (photoInput.files.length > 0) {
+            const file = photoInput.files[0];
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                localStorage.setItem("photo", e.target.result);
+                photoPreview.src = e.target.result;
+                photoPreview.style.display = "block"; // Show the preview
+            }
+            reader.readAsDataURL(file);
+        }
+
+        document.getElementById("name-input").classList.add('hidden');
+        document.getElementById("photo-input").classList.add('hidden');
+        document.querySelector('.save-btn').classList.add('hidden');
     }
 </script>
 
