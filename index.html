@@ -71,7 +71,7 @@
         }
     </style>
 </head>
-<body>
+<body onload="loadState()">
 
 <h1>2-Month JEE Preparation Timetable</h1>
 
@@ -85,23 +85,22 @@
         </tr>
     </thead>
     <tbody>
-        <!-- Repeat this block for each day of the two months -->
         <tr>
             <td>Day 1</td>
-            <td>ELECTRIC CHARGES AND FIELDS</td>
-            <td class="checkbox-cell"><input type="checkbox" class="complete-checkbox" onclick="showCongrats()"></td>
+            <td>Math: Algebra and Functions</td>
+            <td class="checkbox-cell"><input type="checkbox" class="complete-checkbox" id="checkbox-1" onclick="toggleCheckbox(1)"></td>
         </tr>
         <tr>
             <td>Day 2</td>
-            <td>ELECTROSTATIC POTENTIAL AND CAPACITANCE</td>
-            <td class="checkbox-cell"><input type="checkbox" class="complete-checkbox" onclick="showCongrats()"></td>
+            <td>Physics: Mechanics</td>
+            <td class="checkbox-cell"><input type="checkbox" class="complete-checkbox" id="checkbox-2" onclick="toggleCheckbox(2)"></td>
         </tr>
         <tr>
             <td>Day 3</td>
-            <td>CURRENT ELECTRICITY</td>
-            <td class="checkbox-cell"><input type="checkbox" class="complete-checkbox" onclick="showCongrats()"></td>
+            <td>Chemistry: Atomic Structure</td>
+            <td class="checkbox-cell"><input type="checkbox" class="complete-checkbox" id="checkbox-3" onclick="toggleCheckbox(3)"></td>
         </tr>
-        <!-- Add rows up to 60 days with topics as needed -->
+        <!-- Repeat for up to 60 days as needed -->
     </tbody>
 </table>
 
@@ -120,8 +119,8 @@
                 document.write(`
                     <tr>
                         <td>Day ${i}</td>
-                        <td><input type="date"></td>
-                        <td><input type="number" min="0" step="0.5" placeholder="Hours" class="hours-input" oninput="calculateTotalHours()"></td>
+                        <td><input type="date" id="date-${i}"></td>
+                        <td><input type="number" min="0" step="0.5" placeholder="Hours" class="hours-input" id="hours-${i}" oninput="updateHours(${i})"></td>
                     </tr>
                 `);
             }
@@ -146,10 +145,7 @@
     }
 
     function showCongrats() {
-        // Show congratulatory message
         alert("Congratulations on completing a topic!");
-
-        // Trigger confetti animation
         for (let i = 0; i < 100; i++) {
             createConfetti();
         }
@@ -163,14 +159,35 @@
         confetti.style.left = Math.random() * 100 + "vw";
         confetti.style.animationDuration = Math.random() * 1 + 1 + "s";
         confettiContainer.appendChild(confetti);
-
-        // Remove confetti after animation
         setTimeout(() => confetti.remove(), 2000);
     }
 
     function getRandomColor() {
         const colors = ["#FF5733", "#FFBD33", "#75FF33", "#33FF57", "#33FFBD", "#3357FF", "#8E33FF", "#FF33A8"];
         return colors[Math.floor(Math.random() * colors.length)];
+    }
+
+    function toggleCheckbox(day) {
+        const checkbox = document.getElementById(`checkbox-${day}`);
+        localStorage.setItem(`checkbox-${day}`, checkbox.checked);
+        if (checkbox.checked) showCongrats();
+    }
+
+    function updateHours(day) {
+        const hours = document.getElementById(`hours-${day}`).value;
+        localStorage.setItem(`hours-${day}`, hours);
+        calculateTotalHours();
+    }
+
+    function loadState() {
+        for (let i = 1; i <= 60; i++) {
+            const checkboxState = localStorage.getItem(`checkbox-${i}`) === "true";
+            document.getElementById(`checkbox-${i}`).checked = checkboxState;
+
+            const savedHours = localStorage.getItem(`hours-${i}`);
+            if (savedHours) document.getElementById(`hours-${i}`).value = savedHours;
+        }
+        calculateTotalHours();
     }
 </script>
 
