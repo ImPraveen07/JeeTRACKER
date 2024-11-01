@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2-Month JEE Preparation Timetable</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f8ff;
+        }
+        h1, h2 {
+            text-align: center;
+            color: #2e8b57;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        td {
+            background-color: #f9f9f9;
+        }
+        .checkbox-cell {
+            text-align: center;
+        }
+        .total-hours {
+            font-weight: bold;
+            color: #d9534f;
+            text-align: right;
+        }
+        /* Confetti styles */
+        .confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 10;
+            overflow: hidden;
+        }
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: red;
+            animation: confetti-fall 1s ease-in-out forwards;
+            opacity: 0;
+        }
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-50vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(50vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<h1>2-Month JEE Preparation Timetable</h1>
+
+<h2>Timetable</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Day</th>
+            <th>Topic</th>
+            <th>Completed</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Repeat this block for each day of the two months -->
+        <tr>
+            <td>Day 1</td>
+            <td>ELECTRIC CHARGES AND FIELDS</td>
+            <td class="checkbox-cell"><input type="checkbox" class="complete-checkbox" onclick="showCongrats()"></td>
+        </tr>
+        <tr>
+            <td>Day 2</td>
+            <td>ELECTROSTATIC POTENTIAL AND CAPACITANCE</td>
+            <td class="checkbox-cell"><input type="checkbox" class="complete-checkbox" onclick="showCongrats()"></td>
+        </tr>
+        <tr>
+            <td>Day 3</td>
+            <td>CURRENT ELECTRICITY</td>
+            <td class="checkbox-cell"><input type="checkbox" class="complete-checkbox" onclick="showCongrats()"></td>
+        </tr>
+        <!-- Add rows up to 60 days with topics as needed -->
+    </tbody>
+</table>
+
+<h2>Daily Study Hours Tracker</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Day</th>
+            <th>Date</th>
+            <th>Hours Studied</th>
+        </tr>
+    </thead>
+    <tbody>
+        <script>
+            for (let i = 1; i <= 60; i++) {
+                document.write(`
+                    <tr>
+                        <td>Day ${i}</td>
+                        <td><input type="date"></td>
+                        <td><input type="number" min="0" step="0.5" placeholder="Hours" class="hours-input" oninput="calculateTotalHours()"></td>
+                    </tr>
+                `);
+            }
+        </script>
+    </tbody>
+</table>
+
+<p class="total-hours">Total Study Hours: <span id="totalHours">0 hours</span></p>
+
+<!-- Confetti Container -->
+<div id="confettiContainer" class="confetti-container"></div>
+
+<script>
+    function calculateTotalHours() {
+        let total = 0;
+        const hoursInputs = document.querySelectorAll(".hours-input");
+        hoursInputs.forEach(input => {
+            const hours = parseFloat(input.value) || 0;
+            total += hours;
+        });
+        document.getElementById("totalHours").innerText = total.toFixed(2) + " hours";
+    }
+
+    function showCongrats() {
+        // Show congratulatory message
+        alert("Congratulations on completing a topic!");
+
+        // Trigger confetti animation
+        for (let i = 0; i < 100; i++) {
+            createConfetti();
+        }
+    }
+
+    function createConfetti() {
+        const confettiContainer = document.getElementById("confettiContainer");
+        const confetti = document.createElement("div");
+        confetti.classList.add("confetti");
+        confetti.style.backgroundColor = getRandomColor();
+        confetti.style.left = Math.random() * 100 + "vw";
+        confetti.style.animationDuration = Math.random() * 1 + 1 + "s";
+        confettiContainer.appendChild(confetti);
+
+        // Remove confetti after animation
+        setTimeout(() => confetti.remove(), 2000);
+    }
+
+    function getRandomColor() {
+        const colors = ["#FF5733", "#FFBD33", "#75FF33", "#33FF57", "#33FFBD", "#3357FF", "#8E33FF", "#FF33A8"];
+        return colors[Math.floor(Math.random() * colors.length)];
+    }
+</script>
+
+</body>
+</html>
