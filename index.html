@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -32,6 +31,7 @@
         }
         td {
             background-color: #f9f9f9;
+            cursor: pointer;
         }
         .checkbox-cell {
             text-align: center;
@@ -62,181 +62,459 @@
             cursor: pointer;
             border-radius: 5px;
         }
-        .mode-switch:hover {
-            background-color: rgba(46, 139, 87, 0.1);
-        }
         .dark-mode {
             background-color: #000;
             color: #fff;
         }
-        .dark-mode td, .dark-mode th {
-            color: #000; /* Set text color to black for dark mode */
+        .dark-mode h1, .dark-mode h2 {
+            color: #fff;
+        }
+        .dark-mode th {
+            color: #fff;
+        }
+        .dark-mode td {
+            color: #000; /* Table text turns black in dark mode */
+        }
+        .clear-data-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: transparent;
+            color: #2e8b57;
+            border: 2px solid #2e8b57;
+            padding: 8px 12px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .clear-data-btn:hover {
+            background-color: rgba(46, 139, 87, 0.1);
+        }
+        /* Animation for completion */
+        .congratulation {
+            display: none;
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            margin-top: 20px;
+            animation: fadeIn 0.5s, fadeOut 0.5s 2s;
+        }
+        @keyframes fadeIn {
+            from {opacity: 0;}
+            to {opacity: 1;}
+        }
+        @keyframes fadeOut {
+            from {opacity: 1;}
+            to {opacity: 0;}
         }
     </style>
 </head>
-<body onload="loadCheckboxes(); calculateTotalHours(); checkMode(); loadDatesAndHours();">
-<button class="mode-switch" onclick="toggleMode()">Switch to Dark Mode</button>
-    <br><br>
-<!-- Summary Button -->
-<button class="summary-btn" onclick="saveAndRedirect()">View Summary</button>
+<body onload="loadCheckboxes(); loadDatesAndHours();">
+    <button class="clear-data-btn" onclick="clearAllData()">Clear All Data</button>
+    <button class="mode-switch" onclick="toggleMode()">Switch to Dark Mode</button>
+    <br><br><br>
+    <button class="summary-btn" onclick="saveAndRedirect()">VISIT PROFILE</button>
 
-<h1>2-Month JEE Preparation Timetable</h1>
+    <h1>2-Month JEE Preparation Timetable</h1>
 
-<h2>Timetable</h2>
-<table>
-    <thead>
-        <tr>
-            <th>Day</th>
-            <th>Topic</th>
-            <th>Completed</th>
+    <h2>Timetable</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Day</th>
+                <th>Chapter</th>
+                <th>Completed</th>
+            </tr>
+             <tr>
+              <th colspan="3">PHYSICS</th>
         </tr>
-    </thead>
-    <tbody id="timetable-body">
-        <tr>
-            <td>Day 1</td>
-            <td>ELECTRIC CHARGES AND FIELDS</td>
-            <td class="checkbox-cell"><input type="checkbox" class="complete-checkbox" onclick="showCongrats(this, 1)"></td>
-        </tr>
-        <tr>
-            <td>Day 2</td>
-            <td>ELECTROSTATIC POTENTIAL AND CAPACITANCE</td>
-            <td class="checkbox-cell"><input type="checkbox" class="complete-checkbox" onclick="showCongrats(this, 2)"></td>
-        </tr>
-        <tr>
-            <td>Day 3</td>
-            <td>CURRENT ELECTRICITY</td>
-            <td class="checkbox-cell"><input type="checkbox" class="complete-checkbox" onclick="showCongrats(this, 3)"></td>
-        </tr>
-        <!-- Add rows up to 60 days with topics as needed -->
-    </tbody>
-</table>
+           
+        </thead>
+        <tbody id="timetable-body">
+            <tr onclick="toggleInnerTopics(1)">
+                <td>Day 1</td>
+                <td>ELECTRIC CHARGES AND FIELDS</td>
+                <td class="checkbox-cell"><input type="checkbox" class="complete-checkbox" id="chapter-1" onchange="updateLocalStorage()" /></td>
+            </tr>
+            <tr onclick="toggleInnerTopics(2)">
+                <td>Day 2</td>
+                <td>ELECTROSTATIC POTENTIAL AND CAPACITANCE</td>
+                <td class="checkbox-cell"><input type="checkbox" class="complete-checkbox" id="chapter-2" onchange="updateLocalStorage()" /></td>
+            </tr>
+            <tr onclick="toggleInnerTopics(3)">
+                <td>Day 3</td>
+                <td>CURRENT ELECTRICITY</td>
+                <td class="checkbox-cell"><input type="checkbox" class="complete-checkbox" id="chapter-3" onchange="updateLocalStorage()" /></td>
+            </tr>
+                        <tr onclick="toggleInnerTopics(4)">
+                <td>Day 4</td>
+                <td>MOVING CHARGES AND MAGNETISM
+</td>
+                <td class="checkbox-cell"><input type="checkbox" class="complete-checkbox" id="chapter-4" onchange="updateLocalStorage()" /></td>
+            </tr>                        <tr onclick="toggleInnerTopics(5)">
+                <td>Day 5</td>
+                <td>MAGNETISM AND MATTER</td>
+                <td class="checkbox-cell"><input type="checkbox" class="complete-checkbox" id="chapter-5" onchange="updateLocalStorage()" /></td>
+            </tr>                        <tr onclick="toggleInnerTopics(6)">
+                <td>Day 6</td>
+                <td>ELECTROMAGNETIC INDUCTION
 
-<h2>Daily Study Hours Tracker</h2>
-<table>
-    <thead>
-        <tr>
-            <th>Day</th>
-            <th>Date</th>
-            <th>Hours Studied</th>
+</td>
+                <td class="checkbox-cell"><input type="checkbox" class="complete-checkbox" id="chapter-6" onchange="updateLocalStorage()" /></td>
+            </tr>                        <tr onclick="toggleInnerTopics(7)">
+                <td>Day 7</td>
+                <td>ALTERNATING CURRENT
+</td>
+                <td class="checkbox-cell"><input type="checkbox" class="complete-checkbox" id="chapter-7" onchange="updateLocalStorage()" /></td>
+            </tr>                        <tr onclick="toggleInnerTopics(8)">
+                <td>Day 8</td>
+                <td>ELECTROMAGNETIC WAVES
+</td>
+                <td class="checkbox-cell"><input type="checkbox" class="complete-checkbox" id="chapter-8" onchange="updateLocalStorage()" /></td>
+            </tr>                        <tr onclick="toggleInnerTopics(9)">
+                <td>Day 9</td>
+                <td>RAY OPTICS AND OPTICAL INSTRUMENTS
+</td>
+                <td class="checkbox-cell"><input type="checkbox" class="complete-checkbox" id="chapter-9" onchange="updateLocalStorage()" /></td>
+            </tr>                        <tr onclick="toggleInnerTopics(10)">
+                <td>Day 10</td>
+                <td>WAVE OPTICS</td>
+                <td class="checkbox-cell"><input type="checkbox" class="complete-checkbox" id="chapter-10" onchange="updateLocalStorage()" /></td>
+            </tr>
+                        <tr onclick="toggleInnerTopics(11)">
+                <td>Day 11</td>
+                <td>DUAL NATURE OF RADIATION AND MATTER
+</td>
+                <td class="checkbox-cell"><input type="checkbox" class="complete-checkbox" id="chapter-11" onchange="updateLocalStorage()" /></td>
+            </tr>
+                        <tr onclick="toggleInnerTopics(12)">
+                <td>Day 12</td>
+                <td>ATOMS</td>
+                <td class="checkbox-cell"><input type="checkbox" class="complete-checkbox" id="chapter-12" onchange="updateLocalStorage()" /></td>
+            </tr>            <tr onclick="toggleInnerTopics(13)">
+                <td>Day 13</td>
+                <td>NUCLEI</td>
+                <td class="checkbox-cell"><input type="checkbox" class="complete-checkbox" id="chapter-13" onchange="updateLocalStorage()" /></td>
+            </tr>            <tr onclick="toggleInnerTopics(14)">
+                <td>Day 14</td>
+                <td>SEMICONDUCTOR ELECTRONICS: MATERIALS, DEVICES AND SIMPLE CIRCUITS
+</td>
+                <td class="checkbox-cell"><input type="checkbox" class="complete-checkbox" id="chapter-14" onchange="updateLocalStorage()" /></td>
+            </tr>
+            
+            
+            
+  <tr>
+              <th colspan="3">CHEMISTRY</th>
         </tr>
-    </thead>
-    <tbody>
-        <script>
-            for (let i = 1; i <= 60; i++) {
-                document.write(`
-                    <tr>
-                        <td>Day ${i}</td>
-                        <td><input type="date" id="date-${i}" onchange="saveDateAndHours(${i})"></td>
-                        <td><input type="number" min="0" step="0.5" placeholder="Hours" class="hours-input" id="hours-${i}" onchange="saveDateAndHours(${i}); calculateTotalHours()"></td>
-                    </tr>
-                `);
-            }
-        </script>
-    </tbody>
-</table>
+            <!-- Add more rows as needed up to Day 60 -->
+        </tbody>
+        
+    </table>
 
-<p class="total-hours">Total Study Hours: <span id="totalHours">0 hours</span></p>
+    <!-- Inner Topics Table -->
+    <div id="inner-topics" style="display:none;">
+        <h2>Inner Topics</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Topic</th>
+                    <th>Completed</th>
+                </tr>
+            </thead>
+            <tbody id="inner-topics-body">
+                <!-- Inner topics will be added here -->
+            </tbody>
+        </table>
+        <div class="congratulation" id="congratulation-message">Congratulations! Chapter Completed!</div>
+    </div>
 
-<!-- Confetti Container -->
-<div id="confettiContainer" class="confetti-container"></div>
+    <h2>Study Time Tracker</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Day</th>
+                <th>Date</th>
+                <th>Hours Studied</th>
+            </tr>
+        </thead>
+        <tbody id="study-time-body">
+            <!-- Rows will be generated by JavaScript -->
+        </tbody>
+    </table>
 
 <script>
-    // Save the date and hours for each day to localStorage when changed
-    function saveDateAndHours(day) {
-        const dateInput = document.getElementById(`date-${day}`);
-        const hoursInput = document.getElementById(`hours-${day}`);
-        localStorage.setItem(`date-${day}`, dateInput.value);
-        localStorage.setItem(`hours-${day}`, hoursInput.value);
-    }
-
-    // Load the dates and hours from localStorage when the page loads
-    function loadDatesAndHours() {
-        for (let i = 1; i <= 60; i++) {
-            const savedDate = localStorage.getItem(`date-${i}`);
-            const savedHours = localStorage.getItem(`hours-${i}`);
-            if (savedDate) {
-                document.getElementById(`date-${i}`).value = savedDate;
-            }
-            if (savedHours) {
-                document.getElementById(`hours-${i}`).value = savedHours;
-            }
+    function clearAllData() {
+        const confirmation = confirm("Do you really want to delete all data?");
+        if (confirmation) {
+            localStorage.clear(); // Clear all localStorage data
+            alert("All data cleared!"); // Alert the user
+            location.reload(); // Reload the page to reset everything
         }
     }
 
-    // Check and load the stored mode
-    function checkMode() {
-        const storedMode = localStorage.getItem("darkMode");
-        if (storedMode === "true") {
-            isDarkMode = true;
-            document.body.classList.add('dark-mode');
-            document.querySelector('.mode-switch').innerText = 'Switch to Light Mode';
+   
+     const innerTopicsData = {
+    1: [
+        "Electric Charge", 
+        "Conductors and Insulators", 
+        "Basic Properties of Electric Charge", 
+        "Coulomb's Law", 
+        "Forces between Multiple Charges", 
+        "Electric Field", 
+        "Electric Field Lines", 
+        "Electric Flux", 
+        "Electric Dipole", 
+        "Dipole in a Uniform External Field", 
+        "Continuous Charge Distribution", 
+        "Gauss's Law", 
+        "Applications of Gauss's Law"
+    ],
+    2: [
+        "Electrostatic Potential", 
+        "Potential due to a Point Charge", 
+        "Potential due to an Electric Dipole", 
+        "Potential due to a System of Charges", 
+        "Equipotential Surfaces", 
+        "Potential Energy of a System of Charges", 
+        "Potential Energy in an External Field", 
+        "Electrostatics of Conductors", 
+        "Dielectrics and Polarisation", 
+        "Capacitors and Capacitance", 
+        "The Parallel Plate Capacitor", 
+        "Effect of Dielectric on Capacitance", 
+        "Combination of Capacitors", 
+        "Energy Stored in a Capacitor"
+    ],
+    3: [
+        "Electric Current", 
+        "Electric Currents in Conductors", 
+        "Ohm's Law", 
+        "Drift of Electrons and the Origin of Resistivity", 
+        "Limitations of Ohm's Law", 
+        "Resistivity of Various Materials", 
+        "Temperature Dependence of Resistivity", 
+        "Electrical Energy, Power", 
+        "Cells, emf, Internal Resistance", 
+        "Cells in Series and in Parallel", 
+        "Kirchhoff's Rules", 
+        "Wheatstone Bridge"
+    ],
+    4: [
+        "Magnetic Force", 
+        "Motion in a Magnetic Field", 
+        "Magnetic Field due to a Current Element, Biot-Savart Law", 
+        "Magnetic Field on the Axis of a Circular Current Loop", 
+        "Ampere's Circuital Law", 
+        "The Solenoid", 
+        "Force between Two Parallel Currents", 
+        "Torque on Current Loop", 
+        "The Moving Coil Galvanometer"
+    ],
+    5: [
+        "The Bar Magnet", 
+        "Magnetism and Gauss's Law", 
+        "Magnetisation and Magnetic Intensity", 
+        "Magnetic Properties of Materials"
+    ],
+    6: [
+        "The Experiments of Faraday and Henry", 
+        "Magnetic Flux", 
+        "Faraday's Law of Induction", 
+        "Lenz's Law and Conservation of Energy", 
+        "Motional Electromotive Force", 
+        "Inductance", 
+        "AC Generator"
+    ],
+    7: [
+        "AC Voltage Applied to a Resistor", 
+        "Representation of AC Current and Voltage by Rotating Vectors (Phasors)", 
+        "AC Voltage Applied to an Inductor", 
+        "AC Voltage Applied to a Capacitor", 
+        "AC Voltage Applied to a Series LCR Circuit", 
+        "Power in AC Circuit: The Power Factor", 
+        "Transformers"
+    ],
+    8: [
+        "Displacement Current", 
+        "Electromagnetic Waves", 
+        "Electromagnetic Spectrum"
+    ],
+    9: [
+        "Introduction", 
+        "Reflection of Light by Spherical Mirrors", 
+        "Refraction", 
+        "Total Internal Reflection", 
+        "Lenses and Optical Instruments"
+    ],
+
+    10: [
+        "Refraction and Reflection of Plane Waves using Huygens Principle",
+        "Huygens Principle",
+        "Coherent and Incoherent Addition of Waves",
+        "Interference of Light Waves and Young's Experiment",
+        "Diffraction",
+        "Polarisation"
+    ],
+    11: [
+        "Electron Emission",
+        "Photoelectric Effect",
+        "Experimental Study of Photoelectric Effect",
+        "Photoelectric Effect and Wave Theory of Light",
+        "Einstein's Photoelectric Equation: Energy Quantum of Radiation",
+        "Particle Nature of Light: The Photon",
+        "Wave Nature of Matter"
+    ],
+    12: [
+        "Alpha particle Scattering and Rutherford's Nuclear Model of Atom",
+        "Atomic Spectra",
+        "Bohr Model of the Hydrogen Atom",
+        "The Line Spectra of the Hydrogen Atom",
+        "DE Broglie's Explanation of Bohr's Second Postulate"
+    ],
+    13: [
+        "Atomic Masses and Composition of Nucleus",
+        "Size of the Nucleus",
+        "Mass-Energy and Nuclear Binding Energy",
+        "Nuclear Force",
+        "Radioactivity",
+        "Nuclear Energy"
+    ],
+    14: [
+        "Classification of Metals, Conductors and Semiconductors",
+        "Intrinsic Semiconductor",
+        "Extrinsic Semiconductor",
+        "p-n Junction",
+        "Semiconductor Diode",
+        "Application of Junction Diode as a Rectifier"
+    ]
+    // You can add more chapters and topics as needed
+};
+
+    let currentChapter = null;
+
+    function toggleInnerTopics(chapter) {
+        const innerTopicsDiv = document.getElementById("inner-topics");
+        if (currentChapter === chapter) {
+            innerTopicsDiv.style.display = "none";
+            currentChapter = null;
+        } else {
+            currentChapter = chapter;
+            innerTopicsDiv.style.display = "block";
+            populateInnerTopics(chapter);
         }
     }
-
-    let isDarkMode = false;
-
-    function toggleMode() {
-        isDarkMode = !isDarkMode;
-        document.body.classList.toggle('dark-mode', isDarkMode);
-        document.querySelector('.mode-switch').innerText = isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode';
-        localStorage.setItem("darkMode", isDarkMode); // Save mode to localStorage
+       function checkInnerTopics(chapter) {
+        const innerCheckboxes = document.querySelectorAll("#inner-topics-body .inner-checkbox");
+        const chapterCheckbox = document.getElementById(`chapter-${chapter}`);
+        chapterCheckbox.checked = Array.from(innerCheckboxes).every(checkbox => checkbox.checked);
+        
+        if (chapterCheckbox.checked) {
+            showCongratulatoryPopup(); // Show the congratulatory popup
+        }
+        
+        updateLocalStorage();
     }
 
-    function calculateTotalHours() {
-        let total = 0;
-        const hoursInputs = document.querySelectorAll(".hours-input");
-        hoursInputs.forEach(input => {
-            const hours = parseFloat(input.value) || 0;
-            total += hours;
+    function showCongratulatoryPopup() {
+        const popup = document.getElementById("congrats-popup");
+        popup.classList.add("show");
+        setTimeout(() => {
+            popup.classList.remove("show");
+        }, 3000); // Popup visible for 3 seconds
+    }
+
+    function populateInnerTopics(chapter) {
+        const innerTopicsBody = document.getElementById("inner-topics-body");
+        innerTopicsBody.innerHTML = ""; // Clear existing topics
+        innerTopicsData[chapter].forEach((topic, index) => {
+            const checked = localStorage.getItem(`inner-${chapter}-${index + 1}`) === "true";
+            const row = document.createElement("tr");
+            row.innerHTML = `<td>${topic}</td><td class="checkbox-cell"><input type="checkbox" class="inner-checkbox" onchange="checkInnerTopics(${chapter})" ${checked ? 'checked' : ''} /></td>`;
+            innerTopicsBody.appendChild(row);
         });
-        document.getElementById("totalHours").innerText = total.toFixed(2) + " hours";
-        localStorage.setItem("totalHours", total.toFixed(2));
+    }
+
+    function checkInnerTopics(chapter) {
+        const innerCheckboxes = document.querySelectorAll("#inner-topics-body .inner-checkbox");
+        const chapterCheckbox = document.getElementById(`chapter-${chapter}`);
+        chapterCheckbox.checked = Array.from(innerCheckboxes).every(checkbox => checkbox.checked);
+        updateLocalStorage();
+        
+        // Show congratulatory message if chapter is completed
+        if (chapterCheckbox.checked) {
+            const message = document.getElementById("congratulation-message");
+            message.style.display = "block"; // Show the message
+            setTimeout(() => {
+                message.style.display = "none"; // Hide it after a few seconds
+            }, 3000); // Duration of the message display
+        }
     }
 
     function loadCheckboxes() {
         const completedTasks = JSON.parse(localStorage.getItem("completedTasks")) || {};
         const checkboxes = document.querySelectorAll(".complete-checkbox");
-        checkboxes.forEach((checkbox, index) => {
+       checkboxes.forEach((checkbox, index) => {
             checkbox.checked = completedTasks[index + 1] || false;
         });
-    }
 
-    function showCongrats(checkbox, day) {
-        const completedTasks = JSON.parse(localStorage.getItem("completedTasks")) || {};
-        completedTasks[day] = checkbox.checked;
-        localStorage.setItem("completedTasks", JSON.stringify(completedTasks));
-
-        if (checkbox.checked) {
-            alert("Congratulations on completing a topic!");
-            for (let i = 0; i < 100; i++) {
-                createConfetti();
-            }
+        // Load dark mode state
+        const isDarkMode = JSON.parse(localStorage.getItem("darkMode")) || false;
+        if (isDarkMode) {
+            document.body.classList.add("dark-mode");
         }
     }
 
-    function createConfetti() {
-        const confettiContainer = document.getElementById("confettiContainer");
-        const confetti = document.createElement("div");
-        confetti.classList.add("confetti");
-        confetti.style.backgroundColor = getRandomColor();
-        confetti.style.left = Math.random() * 100 + "vw";
-        confetti.style.animationDuration = Math.random() * 1 + 1 + "s";
-        confettiContainer.appendChild(confetti);
-
-        // Remove confetti after animation
-        setTimeout(() => confetti.remove(), 2000);
-    }
-
-    function getRandomColor() {
-        const colors = ["#FF5733", "#FFBD33", "#75FF33", "#33FF57", "#33FFBD", "#3357FF", "#8E33FF", "#FF33A8"];
-        return colors[Math.floor(Math.random() * colors.length)];
-    }
-
     function saveAndRedirect() {
-        calculateTotalHours();
+        updateLocalStorage();
         window.location.href = "https://impraveen07.github.io/JeeTrackerprof/index.html";
     }
-</script>
 
+    function loadDatesAndHours() {
+        const studyTimeBody = document.getElementById("study-time-body");
+        for (let i = 1; i <= 60; i++) {
+            const savedDate = localStorage.getItem(`date-${i}`) || "";
+            const savedHours = localStorage.getItem(`hours-${i}`) || "";
+
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>Day ${i}</td>
+                <td><input type="date" id="date-${i}" value="${savedDate}" onchange="saveDateAndHours(${i})"></td>
+                <td><input type="number" min="0" step="0.5" value="${savedHours}" placeholder="Hours" id="hours-${i}" onchange="saveDateAndHours(${i})"></td>
+            `;
+            studyTimeBody.appendChild(row);
+        }
+    }
+
+    function saveDateAndHours(day) {
+        const date = document.getElementById(`date-${day}`).value;
+        const hours = document.getElementById(`hours-${day}`).value;
+        localStorage.setItem(`date-${day}`, date);
+        localStorage.setItem(`hours-${day}`, hours);
+    }
+
+    function updateLocalStorage() {
+        const completedTasks = {};
+        const checkboxes = document.querySelectorAll(".complete-checkbox");
+        checkboxes.forEach((checkbox, index) => {
+            completedTasks[index + 1] = checkbox.checked;
+        });
+        localStorage.setItem("completedTasks", JSON.stringify(completedTasks));
+
+        // Update inner topics in localStorage
+        const innerCheckboxes = document.querySelectorAll("#inner-topics-body .inner-checkbox");
+        innerCheckboxes.forEach((checkbox, index) => {
+            const chapter = currentChapter;
+            localStorage.setItem(`inner-${chapter}-${index + 1}`, checkbox.checked);
+        });
+    }
+
+    function toggleMode() {
+        const body = document.body;
+        body.classList.toggle("dark-mode");
+        const isDarkMode = body.classList.contains("dark-mode");
+        localStorage.setItem("darkMode", JSON.stringify(isDarkMode));
+    }
+</script>
 </body>
 </html>
