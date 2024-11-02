@@ -74,7 +74,7 @@
         }
     </style>
 </head>
-<body onload="loadCheckboxes(); calculateTotalHours(); checkMode();">
+<body onload="loadCheckboxes(); calculateTotalHours(); checkMode(); loadDatesAndHours();">
 <button class="mode-switch" onclick="toggleMode()">Switch to Dark Mode</button>
     <br><br>
 <!-- Summary Button -->
@@ -126,8 +126,8 @@
                 document.write(`
                     <tr>
                         <td>Day ${i}</td>
-                        <td><input type="date"></td>
-                        <td><input type="number" min="0" step="0.5" placeholder="Hours" class="hours-input" oninput="calculateTotalHours()"></td>
+                        <td><input type="date" id="date-${i}" onchange="saveDateAndHours(${i})"></td>
+                        <td><input type="number" min="0" step="0.5" placeholder="Hours" class="hours-input" id="hours-${i}" onchange="saveDateAndHours(${i}); calculateTotalHours()"></td>
                     </tr>
                 `);
             }
@@ -141,6 +141,28 @@
 <div id="confettiContainer" class="confetti-container"></div>
 
 <script>
+    // Save the date and hours for each day to localStorage when changed
+    function saveDateAndHours(day) {
+        const dateInput = document.getElementById(`date-${day}`);
+        const hoursInput = document.getElementById(`hours-${day}`);
+        localStorage.setItem(`date-${day}`, dateInput.value);
+        localStorage.setItem(`hours-${day}`, hoursInput.value);
+    }
+
+    // Load the dates and hours from localStorage when the page loads
+    function loadDatesAndHours() {
+        for (let i = 1; i <= 60; i++) {
+            const savedDate = localStorage.getItem(`date-${i}`);
+            const savedHours = localStorage.getItem(`hours-${i}`);
+            if (savedDate) {
+                document.getElementById(`date-${i}`).value = savedDate;
+            }
+            if (savedHours) {
+                document.getElementById(`hours-${i}`).value = savedHours;
+            }
+        }
+    }
+
     // Check and load the stored mode
     function checkMode() {
         const storedMode = localStorage.getItem("darkMode");
